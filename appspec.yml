@@ -1,0 +1,30 @@
+version: 0.0
+os: linux
+
+files:
+  - source: /
+    destination: /
+
+permissions:
+  - object: /
+    pattern: "**"
+    owner: root
+    group: root
+
+hooks:
+  ApplicationStop:
+    - location: scripts/stop.sh
+      timeout: 20
+      runas: root
+  BeforeInstall:
+    - location: scripts/install_dependencies.sh
+      timout: 20
+      runas: root
+  ApplicationStart:
+    - location: scripts/start.sh
+      timeout: 200
+      runas: root
+  ValidateService:
+    - location: scripts/validate.sh
+      timeout: 120
+      runas: root

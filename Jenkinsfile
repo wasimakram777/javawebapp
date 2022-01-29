@@ -3,12 +3,13 @@ pipeline {
 	  label 'java'
 	  }
 		stages {
-		 stage('Build')
+		 stage('Build') {
 		   steps {
              sh '''
 			   mvn clean install
 			 '''
 			}
+		}
 		 stage("test"){
 		   steps {
 		     echo "this isb test"

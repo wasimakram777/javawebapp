@@ -1,24 +1,28 @@
 pipeline {
-	agent {
-	  label 'maven'
+  agent {
+      label 'maven' 
+  }
+	  stage ('Build'){
+	    steps{
+		sh '''
+			mvn clean install
+			'''
+		}
 	  }
-		stages {
-		 stage('Build') {
-		   steps {
-             sh '''
-			   mvn clean install
-			 '''
-			}
+	  stage ('Unit Test'){
+	    steps{
+		  jacoco()
 		}
-		 stage("test"){
-		   steps {
-		     echo "this isb test"
-			}
-			}
-		stage('Production'){
-		steps {
-      echo "Deploying in Prod"
+	  }
+	  stage('testing'){
+	    steps{
+		  echo "THis is test job "
 		}
- }
- }
+		}
+      stage('Producton'){
+	    steps{
+		  echo "This is Prd"
+		  } 
+		  }
+	}
 }

@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.maven.bt</groupId>
+  <groupId>com.maven</groupId>
   <artifactId>SimpleWebApplication</artifactId>
   <packaging>war</packaging>
   <version>9.1.14</version>
@@ -68,11 +68,11 @@
    <distributionManagement>
     <snapshotRepository>
       <id>nexus-snapshots</id>
-      <url>https://agile.nat.bt.com/nexus/repository/EED_Engg-Excellence-Devops-POC_maven_snapshots/</url>
+      <url>https://agile.com/</url>
     </snapshotRepository>
     <repository>
       <id>nexus-releases</id>
-      <url>https://agile.nat.bt.com/nexus/repository/EED_Engg-Excellence-Devops-POC_maven_releases/</url>
+      <url>https://agile.com/</url>
     </repository>
   </distributionManagement>
 

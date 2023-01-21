@@ -3,7 +3,7 @@ pipeline {
     label "java"
   }
   stages {
-    stage(checkout-scm) {
+    stage('checkout-scm') {
       steps{
         git branch: 'main', credentialsId: 'github-password', url: 'https://github.com/wasimakram777/javawebapp.git'
       }}

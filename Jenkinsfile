@@ -1,15 +1,15 @@
-node("java") {
-  stage ('checkout-scm'){
-    git branch: 'main', credentialsId: 'github-password', url: 'https://github.com/wasimakram777/javawebapp.git'
+pipeline {
+  agent label 'java' 
+  stages {
+    stage(checkout-scm) {
+      steps{
+        git branch: 'main', credentialsId: 'github-password', url: 'https://github.com/wasimakram777/javawebapp.git'
+      }}
+    stage(maven) {
+      steps{
+        sh 'mvn clean install'
+      }
+    }
   }
-  stage (' build ') {
-   echo "Dev" 
-   echo "Build Success" 
- }
-  stage ('Test') {
-  echo "This is testing"
-  }
-  stage ('Prod') {
-    echo "This is Prod"
-  }
-  }
+
+}

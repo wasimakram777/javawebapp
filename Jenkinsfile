@@ -13,8 +13,17 @@ pipeline {
       }
     }
     stage('Test') {
-      steps{
-        sh 'echo "This is testing the Build"'
+      parallel {
+        stage('Test1') {
+          steps{
+            sh 'echo "test case 1"'
+          }
+        }
+        stage('Test2'){
+          steps{
+            sh 'echo "test case 2 "'
+          }
+        }
       }
     }
     stage('Deploy') {

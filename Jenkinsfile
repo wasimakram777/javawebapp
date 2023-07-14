@@ -7,17 +7,17 @@ pipeline {
       steps{
         git branch: 'main', credentialsId: 'jenkins-github', url: 'https://github.com/wasimakram777/javawebapp.git'
       }}
-    stage(Build) {
+    stage('Build') {
       steps{
         sh 'mvn clean install'
       }
     }
-    stage(Test) {
+    stage('Test') {
       steps{
         sh 'echo "This is testing the Build"'
       }
     }
-    stage(Deploy) {
+    stage('Deploy') {
       steps{
         sh 'echo "Here we deploy the build"'
       }

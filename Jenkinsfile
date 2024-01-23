@@ -31,10 +31,5 @@ pipeline {
         sh 'echo "Here we deploy the build"'
       }
     }
-    stage('Notify') {
-      steps{
-        sh 'echo "Here we notify the team"'
-      }
-    }
   }
 }

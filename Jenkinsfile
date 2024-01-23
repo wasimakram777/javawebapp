@@ -16,7 +16,7 @@ pipeline {
       parallel {
         stage('Test1') {
           steps{
-            sh 'echo "test case 1"'
+            sh 'echo "test case 1.2"'
           }
         }
         stage('Test2'){
@@ -29,11 +29,6 @@ pipeline {
     stage('Deploy') {
       steps{
         sh 'echo "Here we deploy the build"'
-      }
-    }
-    stage('Deploy to Tomcat') {
-      steps{
-        sh 'echo "Here we deploy the build to tomcat"'
       }
     }
   }

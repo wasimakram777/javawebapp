@@ -23,7 +23,7 @@ pipeline {
               -Dsonar.projectKey=javawebapp \
               -Dsonar.projectName=javawebapp \
               -Dsonar.projectVersion=1.0 \
-              -Dsonar.java.binaries=target/classes \
+              -Dsonar.java.binaries=target/classes
           }
         }
       }

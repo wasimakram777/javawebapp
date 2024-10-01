@@ -31,6 +31,19 @@ pipeline {
       }
     }
 
+    stage("Sonar Quality Gate Check") {
+            steps {
+                timeout(time: 1, unit: 'HOURS') {
+                    script {
+                        def qualityGate = waitForQualityGate()
+                        if (qualityGate.status != 'OK') {
+                            error "Pipeline aborted due to quality gate failure: ${qualityGate.status}"
+                        }
+                    }
+                } // End of timeout
+            }
+    }
+
     stage('Deploy') {
       steps{
         sh 'echo "Here we deploy the build"'

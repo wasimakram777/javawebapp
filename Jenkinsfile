@@ -3,10 +3,6 @@ pipeline {
     label "java"
   }
   stages {
-    stage('checkout-scm') {
-      steps{
-        git branch: 'main', credentialsId: 'jenkins-github', url: 'https://github.com/wasimakram777/javawebapp.git'
-      }}
     stage('Build') {
       steps{
         sh 'mvn clean install'

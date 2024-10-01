@@ -19,11 +19,13 @@ pipeline {
         script {
           def scannerHome = tool 'scanner_sonar';
           withSonarQubeEnv('jenkins-sonar') {
-            sh "${scannerHome}/bin/sonar-scanner \
+            sh """
+              ${scannerHome}/bin/sonar-scanner \
               -Dsonar.projectKey=javawebapp \
               -Dsonar.projectName=javawebapp \
               -Dsonar.projectVersion=1.0 \
               -Dsonar.java.binaries='target/classes'
+            """
           }
         }
       }

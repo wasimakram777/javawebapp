@@ -21,8 +21,8 @@ pipeline {
           withSonarQubeEnv('sonarqube') {
             sh """
               ${scannerHome}/bin/sonar-scanner \
-              -Dsonar.projectKey=Javawebappproject \
-              -Dsonar.projectName=Javawebappproject \
+              -Dsonar.projectKey=javawebappproject \
+              -Dsonar.projectName=javawebappproject \
               -Dsonar.projectVersion=1.0 \
               -Dsonar.java.binaries='target/classes'
             """

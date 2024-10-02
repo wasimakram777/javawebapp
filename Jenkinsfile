@@ -17,12 +17,12 @@ pipeline {
     stage('SonarQube analysis') {
       steps{
         script {
-          def scannerHome = tool 'scanner_sonar';
-          withSonarQubeEnv('jenkins-sonar') {
+          def scannerHome = tool 'sonarqubescanner';
+          withSonarQubeEnv('sonarqube') {
             sh """
               ${scannerHome}/bin/sonar-scanner \
-              -Dsonar.projectKey=javawebapp \
-              -Dsonar.projectName=javawebapp \
+              -Dsonar.projectKey=Javawebappproject \
+              -Dsonar.projectName=Javawebappproject \
               -Dsonar.projectVersion=1.0 \
               -Dsonar.java.binaries='target/classes'
             """

@@ -30,10 +30,10 @@ pipeline {
         }
       }
     }
-/*
+
     stage("Sonar Quality Gate Check") {
             steps {
-                timeout(time: 1, unit: 'HOURS') {
+                timeout(time: 1, unit: 'MINUTES') {
                     script {
                         def qualityGate = waitForQualityGate()
                         if (qualityGate.status != 'OK') {
@@ -43,10 +43,10 @@ pipeline {
                 } // End of timeout
             }
     }
-*/
-    stage('Deploy') {
+
+    stage('Upload to Nexus') {
       steps{
-        sh 'echo "Here we deploy the build"'
+        nexusArtifactUploader artifacts: [[artifactId: 'SimpleWebApplication', classifier: '', file: 'target/SimpleWebApplication.war', type: 'war']], credentialsId: 'jenkins-nexus', groupId: 'com.maven', nexusUrl: '34.203.246.46:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'mvn_snapshots_project', version: '9.1.14'
       }
     }
     stage('Deploy to Tomcat') {

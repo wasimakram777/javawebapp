@@ -1,0 +1,119 @@
+pipeline {
+  agent {
+    label "java"
+  }
+  
+  environment {
+    EMAIL_RECIPIENTS = 'pramodprasanna17@gmail.com'
+    PATH = "/opt/apache-maven-3.9.2/bin:${PATH}"
+    NEXUS_URL = 'http://54.146.128.184:8081/repository/snapshotnew/'
+    NEXUS_CREDENTIALS = credentials('jenkins-nexus') // Jenkins credentials for Nexus
+    GROUP_ID = 'com/maven'
+    ARTIFACT_ID = 'SimpleWebApplication'
+    VERSION = '9.1.14-SNAPSHOT'
+    WAR_FILE_NAME = "${ARTIFACT_ID}-${VERSION}.war"
+    TOMCAT_CREDENTIALS = credentials('jenkinstomcatmanager')
+    TOMCAT_URL = 'http://54.198.34.228:8080/'
+    TOMCAT_WEBAPPS_DIR = '/opt/tomcat/apache-tomcat-10.1.30/webapps' // Define your Tomcat webapps directory here
+  }
+  
+  stages {
+    stage('Build') {
+      steps {
+        sh 'mvn clean install'
+      }
+    }
+
+    stage('Jacoco') {
+      steps {
+        jacoco()
+      }
+    }
+
+    stage('SonarQube Analysis') {
+      steps {
+        script {
+          def scannerHome = tool 'sonarqubescanner'
+          withSonarQubeEnv('sonarqube') {
+            sh """
+              ${scannerHome}/bin/sonar-scanner \
+              -Dsonar.projectKey=javawebappproject \
+              -Dsonar.projectName=javawebappproject \
+              -Dsonar.projectVersion=1.0 \
+              -Dsonar.java.binaries='target/classes'
+            """
+          }
+        }
+      }
+    }
+
+    stage("Sonar Quality Gate Check") {
+      steps {
+        timeout(time: 1, unit: 'MINUTES') {
+          script {
+            def qualityGate = waitForQualityGate()
+            if (qualityGate.status != 'OK') {
+              error "Pipeline aborted due to quality gate failure: ${qualityGate.status}"
+            }
+          }
+        }
+      }
+    }
+
+    stage('Upload to Nexus') {
+      steps {
+        nexusArtifactUploader artifacts: [[
+          artifactId: 'SimpleWebApplication', 
+          classifier: '', 
+          file: 'target/SimpleWebApplication.war', 
+          type: 'war'
+        ]], 
+        credentialsId: 'jenkins-nexus', 
+        groupId: 'com.maven', 
+        nexusUrl: 'http://54.146.128.184:8081', // Ensure protocol is included
+        nexusVersion: 'nexus3', 
+        protocol: 'http', 
+        repository: 'snapshotnew', 
+        version: '9.1.14-SNAPSHOT'
+      }
+    }
+    
+    stage('Deploy WAR from Nexus to Tomcat') {
+      agent {
+        label "tomcat"
+      }
+      steps {
+        script {
+          // Download the WAR from Nexus
+          sh """
+          wget --user=${NEXUS_CREDENTIALS_USR} --password=${NEXUS_CREDENTIALS_PSW} \
+          ${NEXUS_URL}${GROUP_ID}/${ARTIFACT_ID}/${VERSION}/${WAR_FILE_NAME} \
+          -O ${WORKSPACE}/${WAR_FILE_NAME}
+          """
+        }
+
+        // Deploy the WAR file directly to the Tomcat webapps directory
+        sh """
+        cp -R ${WORKSPACE}/${WAR_FILE_NAME} ${TOMCAT_WEBAPPS_DIR}
+        """
+      }
+    }
+  }
+
+  post {
+    failure {
+      script {
+        mail(to: EMAIL_RECIPIENTS,
+             subject: "Job '${env.JOB_NAME}' (${env.BUILD_NUMBER}) failed",
+             body: "Please visit ${env.BUILD_URL} for further information")
+      }
+    }
+    success {
+      script {
+        mail(to: EMAIL_RECIPIENTS, 
+             subject: "Job '${env.JOB_NAME}' (${env.BUILD_NUMBER}) succeeded.",
+             body: "Please visit ${env.BUILD_URL} for further information.")
+      }
+    }
+  }
+}

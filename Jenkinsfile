@@ -2,6 +2,10 @@ pipeline {
   agent {
     label "java"
   }
+  environment {
+    EMAIL_RECIPIENTS = 'pramodprasanna17@gmail.com'
+  }
+
   stages {
     stage('Build') {
       steps{
@@ -49,23 +53,24 @@ pipeline {
         nexusArtifactUploader artifacts: [[artifactId: 'SimpleWebApplication', classifier: '', file: 'target/SimpleWebApplication.war', type: 'war']], credentialsId: 'jenkins-nexus', groupId: 'com.maven', nexusUrl: '34.203.246.46:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'mvn_snapshots_project', version: '9.1.14-SNAPSHOT'
       }
     }
-    post('Send Email') {
-        failure {
-            script {
-                mail (to: 'pramodprasanna17@gmail.com',
-                        subject: "Job '${env.JOB_NAME}' (${env.BUILD_NUMBER}) failed",
-                        body: "Please visit ${env.BUILD_URL} for further information"
-                );
-                }
-            }
-         success {
-             script {
-                mail (to: 'pramodprasanna17@gmail.com', 
-                        subject: "Job '${env.JOB_NAME}' (${env.BUILD_NUMBER}) success.",
-                        body: "Please visit ${env.BUILD_URL} for further information.",
-                         );
-                      }
-                  }      
+    post {
+    failure {
+      script {
+        mail (to: 'pramodprasanna17@gmail.com',
+              subject: "Job '${env.JOB_NAME}' (${env.BUILD_NUMBER}) failed",
+              body: "Please visit ${env.BUILD_URL} for further information"
+        )
+      }
+    }
+    success {
+      script {
+        mail (to: 'pramodprasanna17@gmail.com', 
+              subject: "Job '${env.JOB_NAME}' (${env.BUILD_NUMBER}) succeeded.",
+              body: "Please visit ${env.BUILD_URL} for further information."
+        )
+      }
+    }
+  }
 
     stage('Deploy to Tomcat') {
       steps{
@@ -74,4 +79,4 @@ pipeline {
     }
   }
 }
-}
+

@@ -4,6 +4,7 @@ pipeline {
   }
   environment {
     EMAIL_RECIPIENTS = 'pramodprasanna17@gmail.com'
+    PATH = "/opt/apache-maven-3.9.2/bin:${PATH}"
   }
 
   stages {

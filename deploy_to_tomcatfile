@@ -14,6 +14,7 @@ pipeline {
     WAR_FILE_NAME = "${ARTIFACT_ID}-${VERSION}.war"
     TOMCAT_CREDENTIALS = credentials('jenkinstomcatmanager')
     TOMCAT_URL = 'http://54.198.34.228:8080/'
+    TOMCAT_WEBAPPS_DIR = '/opt/tomcat/apache-tomcat-10.1.30/webapps'
   }
   
   stages {
@@ -72,21 +73,39 @@ pipeline {
       steps {
         script {
           // Download the WAR from Nexus
+          def downloadedWarName = "${ARTIFACT_ID}-${VERSION}-*.war"
           sh """
           wget --user=${NEXUS_CREDENTIALS_USR} --password=${NEXUS_CREDENTIALS_PSW} \
           ${NEXUS_URL}${GROUP_ID}/${ARTIFACT_ID}/${VERSION}/${WAR_FILE_NAME} \
           -O ${WORKSPACE}/${WAR_FILE_NAME}
           """
         }
+       // Check if the WAR was downloaded successfully
+                script {
+                    if (!fileExists("${WORKSPACE}/${WAR_FILE_NAME}")) {
+                        error "Failed to download the WAR file from Nexus."
+                    }
+                }
+        // Deploy the WAR file directly to the Tomcat webapps directory
+                sh """
+                cp -R ${WORKSPACE}/${WAR_FILE_NAME} ${TOMCAT_WEBAPPS_DIR}
+                """
+                
+                // Optional: Trigger Tomcat to deploy the WAR file using curl (if Tomcat manager is configured)
+                /*
+                sh """
+                curl --user ${TOMCAT_CREDENTIALS_USR}:${TOMCAT_CREDENTIALS_PSW} \
+                --upload-file ${WORKSPACE}/${WAR_FILE_NAME} \
+                ${TOMCAT_URL}/manager/text/deploy?path=/SimpleWebApplication&update=true
+                """
+                */
 
-       // sh "scp -o StrictHostKeyChecking=no ${WORKSPACE}/${WAR_FILE_NAME} user@your-tomcat-server:/opt/tomcat/apache-tomcat-10.1.30/webapps/"
         // Deploy to Tomcat using the downloaded WAR
         deploy adapters: [tomcat9(credentialsId: 'jenkinstomcatmanager', 
                                   url: "${TOMCAT_URL}")], 
                contextPath: 'SimpleWebApplication', 
                onFailure: false, 
                war: "${WORKSPACE}/${WAR_FILE_NAME}"
-        sh 'cp -R /home/tomcat/workspace/Javawebappproject/"${WAR_FILE_NAME}" /opt/tomcat/apache-tomcat-10.1.30/webapps'
       }
     }
   }

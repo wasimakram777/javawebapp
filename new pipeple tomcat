@@ -70,7 +70,7 @@ pipeline {
         ]], 
         credentialsId: 'jenkins-nexus', 
         groupId: 'com.maven', 
-        nexusUrl: 'http://54.146.128.184:8081', // Ensure protocol is included
+        nexusUrl: '54.146.128.184:8081', // Ensure protocol is included
         nexusVersion: 'nexus3', 
         protocol: 'http', 
         repository: 'snapshotnew', 

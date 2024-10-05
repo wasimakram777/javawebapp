@@ -79,7 +79,7 @@ pipeline {
           """
         }
 
-        sh "scp -o StrictHostKeyChecking=no ${WORKSPACE}/${WAR_FILE_NAME} user@your-tomcat-server:/opt/tomcat/apache-tomcat-10.1.30/webapps/
+        sh "scp -o StrictHostKeyChecking=no ${WORKSPACE}/${WAR_FILE_NAME} user@your-tomcat-server:/opt/tomcat/apache-tomcat-10.1.30/webapps/"
        /* 
         // Deploy to Tomcat using the downloaded WAR
         deploy adapters: [tomcat9(credentialsId: 'jenkinstomcatmanager', 

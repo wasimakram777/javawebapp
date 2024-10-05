@@ -64,8 +64,8 @@ pipeline {
                         subject: "Job '${env.JOB_NAME}' (${env.BUILD_NUMBER}) success.",
                         body: "Please visit ${env.BUILD_URL} for further information.",
                          );
-                }
-            }      
+                      }
+                  }      
 
     stage('Deploy to Tomcat') {
       steps{
@@ -73,4 +73,5 @@ pipeline {
       }
     }
   }
+}
 }

@@ -1,0 +1,24 @@
+pipeline {
+    agent any
+    environment {
+    PATH = "/opt/apache-maven-3.9.2/bin:${PATH}"
+     }
+    stages {
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/pramodprasannakumar/javawebappproject.git'
+            }
+        }
+        
+        stage('Build') {
+            steps {
+                sh 'mvn clean package'
+            }
+        }
+        stage('Deployment') {
+            steps {
+                deploy adapters: [tomcat9(credentialsId: 'jenkinstomcatmanager', path: '', url: 'http://54.198.34.228:8080/')], contextPath: null, war: '**/*.war'
+            }
+        }
+    }
+}

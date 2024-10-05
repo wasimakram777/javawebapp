@@ -65,7 +65,7 @@ pipeline {
     }
   }
 }
-}
+
   post {
     failure {
       script {

@@ -56,7 +56,7 @@ pipeline {
     
     stage('Deploy to Tomcat') {
       agent {
-        label "Tomcat"
+        label "tomcat"
       }
       steps{
         sh 'echo "Here we deploy the build to tomcat"'

@@ -6,7 +6,7 @@ pipeline {
   environment {
     EMAIL_RECIPIENTS = 'pramodprasanna17@gmail.com'
     PATH = "/opt/apache-maven-3.9.2/bin:${PATH}"
-    NEXUS_URL = 'http://54.146.128.184:8081/repository/mvn_snapshots_project/'
+    NEXUS_URL = 'http://54.146.128.184:8081/repository/snapshotnew/'
     NEXUS_CREDENTIALS = credentials('jenkins-nexus') // Jenkins credentials for Nexus
     GROUP_ID = 'com/maven'
     ARTIFACT_ID = 'SimpleWebApplication'
@@ -84,7 +84,7 @@ pipeline {
                                   url: "${TOMCAT_URL}")], 
                contextPath: 'SimpleWebApplication', 
                onFailure: false, 
-               war: "${WORKSPACE}/${WAR_FILE_NAME}"
+               war: "${/opt/tomcat/apache-tomcat-10.1.30/webapps}/${WAR_FILE_NAME}"
       }
     }
   }

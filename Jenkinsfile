@@ -59,7 +59,7 @@ pipeline {
         label "tomcat"
       }
       steps{
-        deploy adapters: [tomcat10(credentialsId: 'jenkinstomcatmanager', path: '', url: 'http://54.198.34.228:8080/')], contextPath: null, onFailure: false, war: '**/*.war'
+        deploy adapters: [tomcat9(credentialsId: 'jenkinstomcatmanager', path: '', url: 'http://54.198.34.228:8080/')], contextPath: null, onFailure: false, war: '**/*.war'
       }
     }
   }

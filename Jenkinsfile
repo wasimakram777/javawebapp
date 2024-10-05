@@ -59,7 +59,6 @@ pipeline {
         label "tomcat"
       }
       steps{
-        sh 'echo "Here we deploy the build to tomcat"'
         deploy adapters: [tomcat10(credentialsId: 'jenkinstomcatmanager', path: '', url: 'http://54.198.34.228:8080/')], contextPath: null, onFailure: false, war: '**/*.war'
       }
     }

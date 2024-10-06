@@ -100,7 +100,7 @@ stage('Deploy WAR to Tomcat') {
               label "tomcat"
                 }
            steps {
-               withCredentials([usernamePassword(credentialsId: 'tomcat-credentials', usernameVariable: 'hostmanager', passwordVariable: 'hostmanager')]) {
+               withCredentials([usernamePassword(credentialsId: 'tomcat-password', usernameVariable: 'hostmanager', passwordVariable: 'hostmanager')]) {
                    script {
                        // Deploy the WAR file to Tomcat using Tomcat Manager API
                        sh """

@@ -88,7 +88,7 @@ pipeline {
         script {
           // Download the WAR from Nexus
           sh """
-          wget --auth-no-challenge --user=${NEXUS_CREDENTIALS_USR} --password=${NEXUS_CREDENTIALS_PSW} \
+          wget --auth-no-challenge --user=${NEXUS_CREDENTIALS} --password=${NEXUS_CREDENTIALS} \
           --timeout=30 --retry-connrefused --tries=3 \
           ${NEXUS_URL}${GROUP_ID}/${ARTIFACT_ID}/${VERSION}/${WAR_FILE_NAME} \
           -O ${WORKSPACE}/${WAR_FILE_NAME}

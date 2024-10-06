@@ -88,7 +88,7 @@ pipeline {
       steps {
         script {
          sh """
-            wget --user=${NEXUSUSER_NAME} --password=${NEXUS_PASSWORD} ${NEXUS_URL}${GROUP_ID}/${ARTIFACT_ID}/${VERSION}/${WAR_FILE_NAME}
+            wget --auth-no-challenge --user=${NEXUSUSER_NAME} --password=${NEXUS_PASSWORD} ${NEXUS_URL}${GROUP_ID}/${ARTIFACT_ID}/${VERSION}/${WAR_FILE_NAME}
             mv ${WAR_FILE_NAME} simplejava1.war
          """
         }

@@ -90,7 +90,7 @@ pipeline {
         script {
          sh """
 wget --user=admin --password=admin12 http://54.209.128.178:8081/repository/snapshotnew/com/maven/SimpleWebApplication/9.1.14-SNAPSHOT/SimpleWebApplication-9.1.14-20241005.134015-5.war
-mv SimpleWebApplication-9.1.14-20241005.134015-5.war simplejava.war
+mv SimpleWebApplication-9.1.14-20241005.134015-5.war simplejava1.war
 
 """
 }
@@ -103,7 +103,7 @@ stage('Deploy WAR to Tomcat') {
                 }
            steps {
                sh """
-deploy adapters: [tomcat9(credentialsId: 'tomcat-password', path: '', url: 'http://54.88.142.55:8080/')], contextPath: 'SimpleWebApplication', war: 'SimpleWebApplication.war'
+deploy adapters: [tomcat9(credentialsId: 'tomcat-password', path: '', url: 'http://54.88.142.55:8080/')], contextPath: 'SimpleWebApplication', war: 'simplejava1.war'
 """
                    }
                }

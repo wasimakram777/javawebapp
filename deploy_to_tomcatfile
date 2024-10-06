@@ -6,14 +6,14 @@ pipeline {
   environment {
     EMAIL_RECIPIENTS = 'pramodprasanna17@gmail.com'
     PATH = "/opt/apache-maven-3.9.2/bin:${PATH}"
-    NEXUS_URL = 'http://54.146.128.184:8081/repository/snapshotnew/'
+    NEXUS_URL = 'http://54.209.128.178:8081/repository/snapshotnew/'
     NEXUS_CREDENTIALS = credentials('jenkins-nexus') // Jenkins credentials for Nexus
     GROUP_ID = 'com/maven'
     ARTIFACT_ID = 'SimpleWebApplication'
     VERSION = '9.1.14-SNAPSHOT'
     WAR_FILE_NAME = "${ARTIFACT_ID}-${VERSION}.war"
     TOMCAT_CREDENTIALS = credentials('jenkinstomcatmanager')
-    TOMCAT_URL = 'http://54.198.34.228:8080/'
+    TOMCAT_URL = 'http://54.88.142.55:8080/'
     TOMCAT_WEBAPPS_DIR = '/opt/tomcat/apache-tomcat-10.1.30/webapps'
   }
   
@@ -62,7 +62,7 @@ pipeline {
 
     stage('Upload to Nexus') {
       steps {
-        nexusArtifactUploader artifacts: [[artifactId: 'SimpleWebApplication', classifier: '', file: 'target/SimpleWebApplication.war', type: 'war']], credentialsId: 'jenkins-nexus', groupId: 'com.maven', nexusUrl: '54.146.128.184:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'snapshotnew', version: '9.1.14-SNAPSHOT'
+        nexusArtifactUploader artifacts: [[artifactId: 'SimpleWebApplication', classifier: '', file: 'target/SimpleWebApplication.war', type: 'war']], credentialsId: 'jenkins-nexus', groupId: 'com.maven', nexusUrl: '54.209.128.178:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'snapshotnew', version: '9.1.14-SNAPSHOT'
       }
     }
     
@@ -73,7 +73,7 @@ pipeline {
       steps {
         script {
           // Download the WAR from Nexus
-          def downloadedWarName = "${ARTIFACT_ID}-${VERSION}-*.war"
+          def downloadedWarName = "${ARTIFACT_ID}-${VERSION}-*-*.war"
           sh """
           wget --user=${NEXUS_CREDENTIALS_USR} --password=${NEXUS_CREDENTIALS_PSW} \
           ${NEXUS_URL}${GROUP_ID}/${ARTIFACT_ID}/${VERSION}/${WAR_FILE_NAME} \
@@ -101,7 +101,7 @@ pipeline {
                 */
 
         // Deploy to Tomcat using the downloaded WAR
-        deploy adapters: [tomcat9(credentialsId: 'jenkinstomcatmanager', 
+        deploy adapters: [tomcat9(credentialsId: 'tomcat-password', 
                                   url: "${TOMCAT_URL}")], 
                contextPath: 'SimpleWebApplication', 
                onFailure: false, 

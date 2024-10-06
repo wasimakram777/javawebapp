@@ -94,22 +94,5 @@ curl -u ${NEXUSUSER_NAME}:${NEXUS_PASSWORD} -O ${NEXUS_URL}${WAR_FILE_NAME}
       }
     }
   }
-
-  post {
-    failure {
-      script {
-        mail(to: EMAIL_RECIPIENTS,
-             subject: "Job '${env.JOB_NAME}' (${env.BUILD_NUMBER}) failed",
-             body: "Please visit ${env.BUILD_URL} for further information")
-      }
-    }
-    success {
-      script {
-        mail(to: EMAIL_RECIPIENTS, 
-             subject: "Job '${env.JOB_NAME}' (${env.BUILD_NUMBER}) succeeded.",
-             body: "Please visit ${env.BUILD_URL} for further information.")
-      }
-    }
-  }
 }
 }

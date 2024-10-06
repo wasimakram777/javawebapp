@@ -91,11 +91,12 @@ pipeline {
           -O ${WORKSPACE}/${WAR_FILE_NAME}
           """
         }
-
-        // Deploy the WAR file directly to the Tomcat webapps directory
+        deploy adapters: [tomcat9(credentialsId: 'tomcat-password', path: '', url: 'http://54.88.142.55:8080/')], contextPath: 'SimpleWebApplication', onFailure: false, war: 'SimpleWebApplication.war'
+       /* // Deploy the WAR file directly to the Tomcat webapps directory
         sh """
         cp -R ${WORKSPACE}/${WAR_FILE_NAME} ${TOMCAT_WEBAPPS_DIR}
         """
+        */
       }
     }
   }

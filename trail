@@ -1,0 +1,133 @@
+pipeline {
+  agent {
+    label "java"
+  }
+
+  environment {
+    EMAIL_RECIPIENTS = 'pramodprasanna17@gmail.com'
+    PATH = "/opt/apache-maven-3.9.2/bin:${PATH}"
+    NEXUS_URL = 'http://54.209.128.178:8081/repository/snapshotnew/'
+    NEXUS_CREDENTIALS = credentials('jenkins-nexus')
+    GROUP_ID = 'com/maven'
+    ARTIFACT_ID = 'SimpleWebApplication'
+    VERSION = '9.1.14-SNAPSHOT'
+    WAR_FILE_NAME = "${ARTIFACT_ID}-${VERSION}.war"
+    TOMCAT_CREDENTIALS = credentials('tomcat-password')
+    TOMCAT_URL = 'http://54.88.142.55:8080/'
+    TOMCAT_WEBAPPS_DIR = '/opt/tomcat/apache-tomcat-10.1.30/webapps'
+  }
+
+  stages {
+    stage('Build') {
+      steps {
+        sh 'mvn clean install'
+      }
+    }
+
+    stage('Jacoco') {
+      steps {
+        jacoco()
+      }
+    }
+
+    stage('SonarQube Analysis') {
+      steps {
+        script {
+          def scannerHome = tool 'sonarqubescanner'
+          withSonarQubeEnv('sonarqube') {
+            sh """
+              ${scannerHome}/bin/sonar-scanner \
+              -Dsonar.projectKey=javawebappproject \
+              -Dsonar.projectName=javawebappproject \
+              -Dsonar.projectVersion=1.0 \
+              -Dsonar.java.binaries='target/classes'
+            """
+          }
+        }
+      }
+    }
+
+    stage("Sonar Quality Gate Check") {
+      steps {
+        timeout(time: 1, unit: 'MINUTES') {
+          script {
+            def qualityGate = waitForQualityGate()
+            if (qualityGate.status != 'OK') {
+              error "Pipeline aborted due to quality gate failure: ${qualityGate.status}"
+            }
+          }
+        }
+      }
+    }
+
+    stage('Upload to Nexus') {
+      steps {
+        nexusArtifactUploader(
+          artifacts: [[
+            artifactId: ARTIFACT_ID, 
+            classifier: '', 
+            file: "target/${WAR_FILE_NAME}", 
+            type: 'war'
+          ]], 
+          credentialsId: 'jenkins-nexus', 
+          groupId: GROUP_ID, 
+          nexusUrl: NEXUS_URL, 
+          nexusVersion: 'nexus3', 
+          protocol: 'http', 
+          repository: 'snapshotnew', 
+          version: VERSION
+        )
+      }
+    }
+
+    stage('Deploy WAR from Nexus to Tomcat') {
+      agent {
+        label "tomcat"
+      }
+      steps {
+        script {
+          // Download the WAR from Nexus
+          sh """
+          wget --user=${NEXUS_CREDENTIALS_USR} --password=${NEXUS_CREDENTIALS_PSW} \
+          ${NEXUS_URL}${GROUP_ID}/${ARTIFACT_ID}/${VERSION}/${WAR_FILE_NAME} \
+          -O ${WORKSPACE}/${WAR_FILE_NAME}
+          """
+
+          // Deploy the WAR file to Tomcat
+          deploy(
+            adapters: [tomcat9(
+              credentialsId: 'tomcat-password', 
+              path: '', 
+              url: TOMCAT_URL, 
+              timeout: 2 // 5 minutes
+            )], 
+            contextPath: 'SimpleWebApplication', 
+            onFailure: false, 
+            war: WAR_FILE_NAME
+          )
+        }
+      }
+    }
+  }
+
+  post {
+    failure {
+      script {
+        mail(
+          to: EMAIL_RECIPIENTS,
+          subject: "Job '${env.JOB_NAME}' (${env.BUILD_NUMBER}) failed",
+          body: "Please visit ${env.BUILD_URL} for further information"
+        )
+      }
+    }
+    success {
+      script {
+        mail(
+          to: EMAIL_RECIPIENTS, 
+          subject: "Job '${env.JOB_NAME}' (${env.BUILD_NUMBER}) succeeded.",
+          body: "Please visit ${env.BUILD_URL} for further information."
+        )
+      }
+    }
+  }
+}

@@ -16,7 +16,8 @@ pipeline {
     TOMCAT_URL = 'http://54.88.142.55:8080/'
     TOMCAT_WEBAPPS_DIR = '/opt/tomcat/apache-tomcat-10.1.30/webapps' // Define your Tomcat webapps directory here
     WORKSPACE = '/home/tomcat/workspace/Javawebappproject'
-
+    NEXUSUSER_NAME = 'admin'
+    NEXUS_PASSWORD = 'admin12'
   }
   
   stages {
@@ -88,15 +89,20 @@ pipeline {
         script {
           // Download the WAR from Nexus
           sh """
+curl -u ${NEXUSUSER_NAME}:${NEXUS_PASSWORD} -O ${NEXUS_URL}${WAR_FILE_NAME}
+/*
           wget --auth-no-challenge --user=${NEXUS_CREDENTIALS} --password=${NEXUS_CREDENTIALS} \
           --timeout=30 --retry-connrefused --tries=3 \
           ${NEXUS_URL}${GROUP_ID}/${ARTIFACT_ID}/${VERSION}/${WAR_FILE_NAME} \
           -O ${WORKSPACE}/${WAR_FILE_NAME}
+*/
           """
         }
+/*
 //cp -R ${WORKSPACE}/*/${WAR_FILE_NAME} ${TOMCAT_WEBAPPS_DIR}
   def deployUrl = "http://hostmanager:hostmanager@http://54.88.142.55:8080/SimpleWebApplication-9.1.14-SNAPSHOT.war"
   sh "curl -T /home/tomcat/workspace/Javawebappproject ${deployUrl}"
+*/
 /*
       deploy adapters: [tomcat9(credentialsId: 'tomcat-password', path: '', url: 'http://54.88.142.55:8080/')], contextPath: 'SimpleWebApplication', onFailure: false, war: '*.war'
 

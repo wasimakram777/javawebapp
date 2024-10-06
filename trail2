@@ -100,11 +100,11 @@ stage('Deploy WAR to Tomcat') {
               label "tomcat"
                 }
            steps {
-               withCredentials([usernamePassword(credentialsId: 'tomcat-password', usernameVariable: 'hostmanager', passwordVariable: 'hostmanager')]) {
+               withCredentials([usernamePassword(credentialsId: 'tomcat-password', usernameVariable: 'hostmanager', passwordVariable: 'hostmanager1')]) {
                    script {
                        // Deploy the WAR file to Tomcat using Tomcat Manager API
                        sh """
-                       curl -u hostmanager:hostmanager --upload-file ${WAR_FILE_NAME} ${TOMCAT_URL}=/.&update=true
+                       curl -u hostmanager:hostmanager1 --upload-file ${WAR_FILE_NAME} ${TOMCAT_URL}=/.&update=true
                        """
                    }
                }

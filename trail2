@@ -94,7 +94,7 @@ curl -u ${NEXUSUSER_NAME}:${NEXUS_PASSWORD} -O ${NEXUS_URL}${WAR_FILE_NAME}
 }
 }
 }
-}
+
 stage('Deploy WAR to Tomcat') {
           agent {
               label "tomcat"

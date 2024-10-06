@@ -94,14 +94,17 @@ pipeline {
           -O ${WORKSPACE}/${WAR_FILE_NAME}
           """
         }
+cp -R ${WORKSPACE}/*/${WAR_FILE_NAME} ${TOMCAT_WEBAPPS_DIR}
+  def deployUrl = "http://hostmanager:hostmanager@http://54.88.142.55:8080/SimpleWebApplication-9.1.14-SNAPSHOT.war"
+  sh "curl -T /home/tomcat/workspace/Javawebappproject ${deployUrl}"
 /*
       deploy adapters: [tomcat9(credentialsId: 'tomcat-password', path: '', url: 'http://54.88.142.55:8080/')], contextPath: 'SimpleWebApplication', onFailure: false, war: '*.war'
-*/
+
 // Deploy the WAR file directly to the Tomcat webapps directory
         sh """
         cp -R ${WORKSPACE}/*/${WAR_FILE_NAME} ${TOMCAT_WEBAPPS_DIR}
         """
-
+*/
       }
     }
   }

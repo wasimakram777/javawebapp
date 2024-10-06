@@ -8,7 +8,7 @@ pipeline {
     PATH = "/opt/apache-maven-3.9.2/bin:${PATH}"
     NEXUS_URL = 'http://54.209.128.178:8081/repository/snapshotnew/'
     NEXUS_CREDENTIALS = credentials('jenkins-nexus') // Jenkins credentials for Nexus
-    GROUP_ID = 'com/maven'
+    GROUP_ID = 'com.maven'
     ARTIFACT_ID = 'SimpleWebApplication'
     VERSION = '9.1.14-SNAPSHOT'
     WAR_FILE_NAME = "${ARTIFACT_ID}-${VERSION}.war"

@@ -94,8 +94,7 @@ pipeline {
           -O ${WORKSPACE}/${WAR_FILE_NAME}
           """
         }
-}
-cp -R ${WORKSPACE}/*/${WAR_FILE_NAME} ${TOMCAT_WEBAPPS_DIR}
+//cp -R ${WORKSPACE}/*/${WAR_FILE_NAME} ${TOMCAT_WEBAPPS_DIR}
   def deployUrl = "http://hostmanager:hostmanager@http://54.88.142.55:8080/SimpleWebApplication-9.1.14-SNAPSHOT.war"
   sh "curl -T /home/tomcat/workspace/Javawebappproject ${deployUrl}"
 /*

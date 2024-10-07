@@ -6,7 +6,7 @@ pipeline {
   environment {
     EMAIL_RECIPIENTS = 'pramodprasanna17@gmail.com'
     PATH = "/opt/apache-maven-3.9.2/bin:${PATH}"
-    NEXUS_URL = 'http://54.209.128.178:8081/repository/snapshotnew/'
+    NEXUS_URL = 'http://54.92.208.105:8081/repository/snapshotnew/'
     NEXUS_CREDENTIALS = credentials('jenkins-nexus') // Jenkins credentials for Nexus
     GROUP_ID = 'com.maven'
     ARTIFACT_ID = 'SimpleWebApplication'
@@ -14,7 +14,7 @@ pipeline {
     WAR_FILE_NAME = "SimpleWebApplication.war"
     //WAR_FILE_NAME = "${ARTIFACT_ID}-${VERSION}.war"
     TOMCAT_CREDENTIALS = credentials('tomcat-password')
-    TOMCAT_URL = 'http://54.88.142.55:8080/'
+    TOMCAT_URL = 'http://54.224.220.179:8080/'
     TOMCAT_WEBAPPS_DIR = '/opt/tomcat/apache-tomcat-10.1.30/webapps' // Define your Tomcat webapps directory here
     WORKSPACE = '/home/tomcat/workspace/Javawebappproject'
     NEXUSUSER_NAME = 'admin'
@@ -74,7 +74,7 @@ pipeline {
         ]], 
         credentialsId: 'jenkins-nexus', 
         groupId: 'com.maven', 
-        nexusUrl: '54.209.128.178:8081', // Ensure protocol is included
+        nexusUrl: '54.92.208.105:8081', // Ensure protocol is included
         nexusVersion: 'nexus3', 
         protocol: 'http', 
         repository: 'snapshotnew', 

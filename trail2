@@ -105,7 +105,8 @@ stage('Deploy WAR to Tomcat') {
                    script {
                        // Deploy the WAR file to Tomcat using Tomcat Manager API
                        sh """
-                       curl -u hostmanager:hostmanager1 --upload-file ${WAR_FILE_NAME} ${TOMCAT_URL}=/.&update=true
+                       ls -al 
+                       #curl -u hostmanager:hostmanager1 --upload-file ${WAR_FILE_NAME} ${TOMCAT_URL}=/.&update=true
                        """
                    }
                }

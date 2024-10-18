@@ -1,9 +1,9 @@
 ---
 - hosts: tomcatServers
   vars:
-    war_url: http://172.31.37.250:8081/repository/maven-snapshots/com/maven/SimpleWebApplication/1.0.0-SNAPSHOT/maven-metadata.xml
-    nexus_username: "'{{ lookup('env', 'nexus_username') }}'"
-    nexus_password: "'{{ lookup('env', 'nexus_password') }}'"
+    war_url: http://172.31.37.250:8081/repository/maven-snapshots/com/maven/SimpleWebApplication'/1.0.0-SNAPSHOT/SimpleWebApplication'-1.0.0-20241018.135913-1.war
+    nexus_username: "admin"
+    nexus_password: "admin"
   become_user: tomcat1
   become: true
   roles:

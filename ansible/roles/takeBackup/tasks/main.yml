@@ -8,5 +8,5 @@
   copy:
     src: /home/tomcat1/apache-tomcat-10.1.31/webapps/*.war
     dest: /opt/tomcat/"{{ ansible_date_time.time }}".war
-    when: war_file_check.stat.exists == true
+    when: war_file_check.stat.exists
     remote_src: yes

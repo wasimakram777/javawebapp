@@ -50,8 +50,17 @@ pipeline {
       }
     }
     stage('Deploy to Tomcat') {
+      agent {
+        label "ansible"
+      }
+      environment {
+        nexus_username = credentials('nexus-jenkins').username
+        nexus_password = credentials('nexus-jenkins').password
+        }
       steps{
-        sh 'echo "Here we deploy the build to tomcat"'
+        script {
+          sh 'ansible-playbook ansible/playbook.yml'
+        }
       }
     }
   }

@@ -1,0 +1,2 @@
+[tomcatServers]
+172.31.13.203 ansible_user=tomcat

@@ -1,0 +1,11 @@
+---
+- name: Download war from nexus
+  get_url:
+    url: "{{ war_url }}"
+    dest: /home/tomcat1/apache-tomcat-10.1.31/webapps/
+    mode: 0755
+    owner: tomcat1
+    group: tomcat1
+    username: "{{ nexus_username }}"
+    password: "{{ nexus_password }}"
+  register: download_war

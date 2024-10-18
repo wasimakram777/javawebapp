@@ -3,3 +3,4 @@
   systemd_service: 
     name: tomcat
     state: stopped
+  become_user: root

@@ -3,3 +3,4 @@
   systemd_service: 
     name: tomcat
     state: started
+  become_user: root

@@ -6,6 +6,6 @@
     mode: 0755
     owner: tomcat1
     group: tomcat1
-    username: "{{ nexus_username }}"
-    password: "{{ nexus_password }}"
+    url_username: "{{ nexus_username }}"
+    url_password: "{{ nexus_password }}"
   register: download_war

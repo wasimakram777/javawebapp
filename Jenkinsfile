@@ -53,13 +53,11 @@ pipeline {
       agent {
         label "ansible"
       }
-      environment {
-        nexus_username = credentials('nexus-jenkins').username
-        nexus_password = credentials('nexus-jenkins').password
-        }
       steps{
         script {
-          sh 'ansible-playbook ansible/playbook.yml'
+          withCredentials([usernamePassword(credentialsId: 'nexus-jenkins', usernameVariable: 'nexus_username', passwordVariable: 'nexus_password')]) {
+            sh 'ansible-playbook ansible/playbook.yml'
+          }
         }
       }
     }

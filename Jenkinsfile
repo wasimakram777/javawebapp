@@ -56,7 +56,7 @@ pipeline {
       steps{
         script {
           withCredentials([usernamePassword(credentialsId: 'nexus-jenkins', usernameVariable: 'nexus_username', passwordVariable: 'nexus_password')]) {
-            sh 'ansible-playbook ansible/playbook.yml'
+            sh 'ansible-playbook -i ansible/hosts ansible/playbook.yml'
           }
         }
       }

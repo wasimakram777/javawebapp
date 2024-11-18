@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: busybox-pod
+spec:
+  containers:
+  - name: busybox
+    image: busybox:latest
+    command: ["sleep", "3600"]  # Keeps the container running by sleeping for an hour
+  affinity:
+    podAntiAffinity: 
+      requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+          - key: env
+            operator: In
+            values:
+            - dev
+        topologyKey: "kubernetes.io/hostname"  # Ensures pods with `env=dev` are not placed on the same node

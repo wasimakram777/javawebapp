@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: car
+  labels:
+    app: car
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: car
+  template:
+    metadata:
+      labels:
+        app: car
+    spec:
+      containers:
+      - name: car
+        image: wasimakram27836/devops9:1.6
+        ports:
+        - containerPort: 80

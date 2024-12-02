@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jenkins
+  labels:
+    app: jenkins
+spec:
+  selector:
+    matchLabels:
+      app: jenkins
+  replicas: 2
+  spec:
+    containers: 
+    - name: jenkins
+      image: jenkins:lts
+      volumeMounts:
+      - name: nfs-pvc
+        mountPath: "/jenkins_home"
+  restartPolicy: "Never"
+  volumes:
+    - name: jenkins-pvc
+      persistentVolumeClaim:
+        claimName: jenkins-claim
+

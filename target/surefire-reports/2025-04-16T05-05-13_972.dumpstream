@@ -1,0 +1,15 @@
+# Created at 2025-04-16T05:05:13.974
+OpenJDK 64-Bit Server VM warning: Ignoring option --illegal-access=permit; support was removed in 17.0
+
+# Created at 2025-04-16T05:05:14.776
+WARNING: A terminally deprecated method in java.lang.System has been called
+
+# Created at 2025-04-16T05:05:14.777
+WARNING: System::setSecurityManager has been called by com.example.javamavenjunithelloworld.HelloAppTest (file:/root/javawebapp/target/test-classes/)
+
+# Created at 2025-04-16T05:05:14.777
+WARNING: Please consider reporting this to the maintainers of com.example.javamavenjunithelloworld.HelloAppTest
+
+# Created at 2025-04-16T05:05:14.777
+WARNING: System::setSecurityManager will be removed in a future release
+

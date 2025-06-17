@@ -59,7 +59,7 @@ public class HelloTest {
         assertThrows(IllegalArgumentException.class, () -> hi.setTimes(-1));
     }    
 
-              @Test
+    @Test
     public void testingSendback()
     {
               Hello hi = new Hello();
@@ -74,5 +74,38 @@ public class HelloTest {
                Hello hi = new Hello();
                System.out.println("Adding unit test case");
         assertEquals(12, hi.addResult(8,4));
+    }
+
+    @Test
+    public void testSayHelloZeroTimes() {
+        OutputStream os = new ByteArrayOutputStream();
+        PrintStream stream = new PrintStream(os, true);
+
+        Hello hi = new Hello();
+        hi.setTimes(0);
+        hi.sayHello(stream);
+
+        assertThat(os.toString(), is(""));
+    }
+
+    @Test
+    public void testSendbackPrints() {
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        PrintStream original = System.out;
+        System.setOut(new PrintStream(os));
+        try {
+            Hello hi = new Hello();
+            String result = hi.sendback("test");
+            assertEquals("test", result);
+            assertThat(os.toString().trim(), is(String.format("Printing given word %s", "test")));
+        } finally {
+            System.setOut(original);
+        }
+    }
+
+    @Test
+    public void testAddResultWithNegative() {
+        Hello hi = new Hello();
+        assertEquals(-2, hi.addResult(3, -5));
     }
 }

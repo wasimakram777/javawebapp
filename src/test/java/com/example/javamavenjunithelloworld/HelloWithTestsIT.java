@@ -52,4 +52,13 @@ public class HelloWithTestsIT {
         String thrice = String.format("%1$s%2$s%1$s%2$s%1$s%2$s", Hello.HELLO, System.lineSeparator());
         assertThat(out.toString(), is(thrice));
     }
+
+    @Test
+    public void doesItSayNothingWhenZero() {
+        String[] args = {"0"};
+        HelloApp.main(args);
+
+        assertThat(out.toString(), is(""));
+    }
 }
+

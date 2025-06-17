@@ -1,3 +1,6 @@
 #!/bin/bash
-yum install -y java-1.8.0-openjdk
+set -e
+# Install Java 21 runtime
+yum install -y java-21-openjdk
 mkdir -p /backup/my-app
+

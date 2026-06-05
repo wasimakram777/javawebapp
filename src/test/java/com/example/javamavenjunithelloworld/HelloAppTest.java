@@ -70,6 +70,18 @@ public class HelloAppTest {
     }
 
     @Test
+    public void testNegativeArgument() {
+        String[] args = {"-1"};
+
+        try {
+            HelloApp.main(args);
+            fail("Unreachable.");
+        } catch (TestExitException e) {
+            assertThat(e.getStatus(), is(HelloApp.EXIT_STATUS_HELLO_FAILED));
+        }
+    }
+
+    @Test
     public void testDefaultArgument() {
         // Passing no arguments should work.
         String[] args = {};

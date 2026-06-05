@@ -2,7 +2,7 @@ FROM ubuntu
 
 # Install required packages and Java
 RUN apt-get update -y && \
-    apt install openjdk-17-jdk wget tar vim -y && \
+    apt install openjdk-21-jdk wget tar vim -y && \
     rm -rf /var/lib/apt/lists/*
 
 # Create tomcat user and directory
